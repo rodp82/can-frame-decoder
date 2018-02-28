@@ -4,13 +4,13 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { CanFrameDecoderComponent } from './can-frame-decoder/can-frame-decoder.component';
+import { DecoderComponent } from './decoder/decoder.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    CanFrameDecoderComponent
+    DecoderComponent
   ],
   imports: [
     BrowserModule,

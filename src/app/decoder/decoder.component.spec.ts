@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CanFrameDecoderComponent } from './can-frame-decoder.component';
+import { DecoderComponent } from './decoder.component';
 
-describe('CanFrameDecoderComponent', () => {
-  let component: CanFrameDecoderComponent;
-  let fixture: ComponentFixture<CanFrameDecoderComponent>;
+describe('DecoderComponent', () => {
+  let component: DecoderComponent;
+  let fixture: ComponentFixture<DecoderComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CanFrameDecoderComponent ]
+      declarations: [ DecoderComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CanFrameDecoderComponent);
+    fixture = TestBed.createComponent(DecoderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
