@@ -1,3 +1,14 @@
+<nav class="navbar navbar-dark bg-primary">
+  <form class="form-inline" style="width: 100%">
+    <label for="canFrame" class="col-form-label col-form-label-lg mx-5 text-white">CAN Frame</label>
+    <input type="text" name="canFrame" id="canFrame"
+           class="form-control form-control-lg" style="flex-grow: 1"
+           placeholder="18FEEE00#795ADE2CFFFFFEFF"
+           [ngModel]="canFrame"
+           (ngModelChange)="onChange($event)">
+  </form>
+</nav>
+<p>{{canFrame}}</p>
 <p>
   Decoder works!
 </p>
