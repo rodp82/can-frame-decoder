@@ -22,10 +22,11 @@ export class DecoderComponent implements OnInit {
   };
 
   constructor() {
+    this.canFrame = '0CF00401#FFFF82DF1AFFFFFF';
     this.canFrameChange
       .debounceTime(500)
       .distinctUntilChanged()
-      .subscribe(decode);
+      .subscribe(this.decode);
   }
 
   ngOnInit() {
