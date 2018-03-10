@@ -3,6 +3,10 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 
+import { DecoderService } from '../services/decoder.service';
+import { CanFrame } from '../models/can-frame';
+import { Pgn, Spn } from '../models/pgn';
+
 
 @Component({
   selector : 'app-decoder',
@@ -11,18 +15,25 @@ import 'rxjs/add/operator/distinctUntilChanged';
 })
 export class DecoderComponent implements OnInit {
 
-  canFrame: string = '0CF00401#FFFF82DF1AFFFFFF';
+  canFrame: CanFrame;
   canFrameChange: Subject<string> = new Subject<string>();
 
   pgns = {
-    61442 : {
-      name : 'Electronic Transmission Controller 1',
-      acronym : 'ETC1',
-      spns : []
-    }
+    61442 : new Pgn (61442, 'Electronic Transmission Controller 1', 8, '10 ms', 'ETC1', [
+      new Spn( 560, 'Transmission Driveline Engaged', '', '1.1', 2, '4 states/2 bit', 0, 'bit'),
+      new Spn( 573, 'Transmission Torque Converter Lockup Engaged', '', '1.3', 2, '4 states/2 bit', 0, 'bit'),
+      new Spn( 574, 'Transmission Shift In Process', '', '1.5', 2, '4 states/2 bit', 0, 'bit'),
+      new Spn( 191, 'Transmission Output Shaft Speed', '', '2-3', 16, '0.125 rpm/bit', 0, 'rpm'),
+      new Spn( 522, 'Percent Clutch Slip', '', '4', 8, '0.4 %/bit', 0, '%'),
+      new Spn( 606, 'Engine Momentary Overspeed Enable', '', '5.1', 2, '4 states/2 bit', 0, 'bit'),
+      new Spn( 607, 'Progressive Shift Disable', '', '5.3', 2, '4 states/2 bit', 0, 'bit'),
+      new Spn( 161, 'Transmission Input Shaft Speed', '', '6-7', 16, '0.125 rpm/bit', 0, 'rpm'),
+      new Spn( 1482, 'Source Address of Controlling Device for Transmission Control', '', '8', 8, '1 source address/bit', 0, 'SA'),
+    ] )
   };
 
-  constructor() {
+  constructor(private decoder: DecoderService) {
+    this.canFrame = new CanFrame('0CF00401#FFFF82DF1AFFFFFF');
     this.canFrameChange
       .debounceTime(500)
       .distinctUntilChanged()
@@ -37,7 +48,8 @@ export class DecoderComponent implements OnInit {
   }
 
   decode(canFrame: string) {
-    this.canFrame = canFrame;
+    this.canFrame.value = canFrame;
+    this.decoder.decode(this.canFrame.value);
   }
 
 }

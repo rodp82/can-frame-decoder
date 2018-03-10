@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { DecoderComponent } from './decoder/decoder.component';
 
+import { DecoderService } from './services/decoder.service';
+
 
 @NgModule({
   declarations: [
@@ -23,7 +25,7 @@ import { DecoderComponent } from './decoder/decoder.component';
     NgbModule.forRoot(),
     AppRoutingModule
   ],
-  providers: [],
+  providers: [ DecoderService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
