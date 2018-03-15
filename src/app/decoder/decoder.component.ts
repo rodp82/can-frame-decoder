@@ -5,6 +5,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 
 import { DecoderService } from '../services/decoder.service';
 import { CanFrame } from '../models/can-frame';
+import { CanFrameResult } from '../models/can-frame-result';
 import { Pgn, Spn } from '../models/pgn';
 
 
@@ -16,6 +17,7 @@ import { Pgn, Spn } from '../models/pgn';
 export class DecoderComponent implements OnInit {
 
   canFrame: CanFrame;
+  canFrameResult: CanFrameResult;
   canFrameChange: Subject<string> = new Subject<string>();
 
   pgns = {
@@ -29,15 +31,28 @@ export class DecoderComponent implements OnInit {
       new Spn( 607, 'Progressive Shift Disable', '', '5.3', 2, '4 states/2 bit', 0, 'bit'),
       new Spn( 161, 'Transmission Input Shaft Speed', '', '6-7', 16, '0.125 rpm/bit', 0, 'rpm'),
       new Spn( 1482, 'Source Address of Controlling Device for Transmission Control', '', '8', 8, '1 source address/bit', 0, 'SA'),
-    ] )
+    ] ),
+    61444 : new Pgn(61444, 'Electronic Engine Controller 1', 8, 'Engine speed dependent', 'EEC1', [
+      new Spn(899, 'Engine Torque Mode', '', '1.1', 4, '16 states/4 bit', 0, 'bit'),
+      new Spn(4154, 'Actual Engine - Percent Torque High Resolution', '', '1.5', 4, '0.125%/bit', 0, '%'),
+      new Spn(512, 'Driver\'s Demand Engine - Percent Torque', '', '2', 8, '1 %/bit', -125, '%'),
+      new Spn(513, 'Actual Engine - Percent Torque', '', '3', 8, '1 %/bit', -125, '%'),
+      new Spn(190, 'Engine Speed', '', '4-5', 16, '0.125 rpm/bit', 0, 'rpm'),
+      new Spn(1483, 'Source Address of Controlling Device for Engine Control', '', '6', 8, '1 source address/bit', 0, 'SA'),
+      new Spn(1675, 'Engine Starter Mode', '', '7.1', 4, '16 states/4 bit', 0, 'bit'),
+      new Spn(2432, 'Engine Demand – Percent Torque', '', '8', 8, '1 %/bit', -125, '%'),
+    ])
   };
 
   constructor(private decoder: DecoderService) {
-    this.canFrame = new CanFrame('0CF00401#FFFF82DF1AFFFFFF');
+    this.decoder.definitions = this.pgns;
     this.canFrameChange
       .debounceTime(500)
       .distinctUntilChanged()
-      .subscribe(newStr => this.decode(newStr));
+      .subscribe(newStr => this.onChangeComplete(newStr));
+
+    this.canFrame = new CanFrame('0CF00401#FFFF82DF1AFFFFFF');
+    this.decode();
   }
 
   ngOnInit() {
@@ -47,9 +62,17 @@ export class DecoderComponent implements OnInit {
     this.canFrameChange.next(text);
   }
 
-  decode(canFrame: string) {
+  onChangeComplete(canFrame: string) {
     this.canFrame.value = canFrame;
-    this.decoder.decode(this.canFrame.value);
+    this.decode();
+  }
+
+  decode() {
+    try {
+      this.canFrameResult = this.decoder.decode(this.canFrame);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
 }

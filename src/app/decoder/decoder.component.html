@@ -9,8 +9,33 @@
            required>
   </form>
 </nav>
-<p>{{canFrame | json}}</p>
 <p>{{form.value | json}}</p>
-<p>
-  Decoder works!
-</p>
+<p>{{canFrame | json}}</p>
+<p>{{canFrameResult | json}}</p>
+
+<table class="table" *ngIf="canFrameResult">
+  <thead class="thead-dark">
+    <tr>
+      <th>SPN</th>
+      <th>Byte Start</th>
+      <th>Bit Length</th>
+      <th>Resolution</th>
+      <th>Offset</th>
+      <th>Units</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let spn of canFrameResult.definition.spns">
+      <td>{{spn.name}}</td>
+      <td>{{spn.bytePosition}}</td>
+      <td>{{spn.bitLength}}</td>
+      <td>{{spn.resolution}}</td>
+      <td>{{spn.offset}}</td>
+      <td>{{spn.units}}</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
