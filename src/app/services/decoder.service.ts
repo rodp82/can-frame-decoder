@@ -45,9 +45,29 @@ export class DecoderService {
     return result;
   }
 
-  private _getSpnRawData(spn: Spn, messageByteArray: Array<string>) {
-    let byteStart = parseInt(spn.bytePosition, 10);
-    return messageByteArray.slice(byteStart - 1, (byteStart - 1) + (spn.bitLength / 8));
+  private _getSpnRawData(spn: Spn, messageByteArray: Array<string>): Array<string> {
+
+    let byteStart = 0;
+    switch (spn.bitLength) {
+      case 1:
+        break;
+      case 2:
+        break;
+      case 4:
+        let posSplit = spn.bytePosition.split('.');
+        byteStart = parseInt(posSplit[0], 10);
+        let bitPos = parseInt(posSplit[1], 10);
+
+        let byte =  messageByteArray[byteStart - 1];
+        return (bitPos === 5) ? [byte[1]] : [byte[0]];
+
+      case 8:
+      case 16:
+        byteStart = parseInt(spn.bytePosition, 10);
+        return messageByteArray.slice(byteStart - 1, (byteStart - 1) + (spn.bitLength / 8));
+      default:
+        throw new Error('not implemented');
+    }
   }
 
   private _calculateRawSpnValue(rawDataArray: Array<string>) {

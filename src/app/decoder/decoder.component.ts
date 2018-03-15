@@ -33,13 +33,13 @@ export class DecoderComponent implements OnInit {
     //   new Spn( 1482, 'Source Address of Controlling Device for Transmission Control', '', '8', 8, '1 source address/bit', 0, 'SA'),
     // ] ),
     61444 : new Pgn(61444, 'Electronic Engine Controller 1', 8, 'Engine speed dependent', 'EEC1', [
-      // new Spn(899, 'Engine Torque Mode', '', '1.1', 4, '16 states/4 bit', 0, 'bit'),
-      // new Spn(4154, 'Actual Engine - Percent Torque High Resolution', '', '1.5', 4, '0.125%/bit', 0, '%'),
+      new Spn(899, 'Engine Torque Mode', '', '1.1', 4, 1, 0, 'bit'),
+      new Spn(4154, 'Actual Engine - Percent Torque High Resolution', '', '1.5', 4, 0.125, 0, '%'),
       new Spn(512, 'Driver\'s Demand Engine - Percent Torque', '', '2', 8, 1, -125, '%'),
       new Spn(513, 'Actual Engine - Percent Torque', '', '3', 8, 1, -125, '%'),
       new Spn(190, 'Engine Speed', '', '4', 16, 0.125, 0, 'rpm'),
       new Spn(1483, 'Source Address of Controlling Device for Engine Control', '', '6', 8, 1, 0, 'SA'),
-      // new Spn(1675, 'Engine Starter Mode', '', '7.1', 4, '16 states/4 bit', 0, 'bit'),
+      new Spn(1675, 'Engine Starter Mode', '', '7.1', 4, 1, 0, 'bit'),
       new Spn(2432, 'Engine Demand – Percent Torque', '', '8', 8, 1, -125, '%'),
     ])
   };

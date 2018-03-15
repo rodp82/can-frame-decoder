@@ -7,11 +7,12 @@ export class CanFrame {
   private _data: string[] = [];
 
   constructor(canFrameStr: string) {
-    // console.log('Model constructed', canFrameStr);
     this.value = canFrameStr;
   }
 
   private _extractStr() {
+    this._resetModel();
+
     let split        = this._value.split('#');
     this.messageId   = split[ 0 ];
     this.messageBody = split[ 1 ];
@@ -33,12 +34,19 @@ export class CanFrame {
     return parseInt(v, 16);
   }
 
+  private _resetModel() {
+    this.messageId = '';
+    this.messageBody = '';
+    this.pgn = '';
+    this.pgnDec = 0;
+    this.data = [];
+  }
+
   get value(): string {
     return this._value;
   }
 
   set value(value: string) {
-    // console.log('Setting value');
     if (value.split('#').length !== 2) {
       throw new Error(`Incorrect format for CAN Frame value: "${value}"`);
     }

@@ -9,35 +9,43 @@
            required>
   </form>
 </nav>
-<p>{{form.value | json}}</p>
-<p>{{canFrame | json}}</p>
-<p>{{canFrameResult | json}}</p>
 
-<table class="table" *ngIf="canFrameResult">
-  <thead class="thead-dark">
-    <tr>
-      <th>SPN</th>
-      <th>Byte Start</th>
-      <th>Bit Length</th>
-      <th>Resolution</th>
-      <th>Offset</th>
-      <th>Units</th>
-      <th>Raw Data</th>
-      <th>Raw Value</th>
-      <th>Actual Value</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let spn of canFrameResult.definition.spns">
-      <td>{{spn.name}}</td>
-      <td>{{spn.bytePosition}}</td>
-      <td>{{spn.bitLength}}</td>
-      <td>{{spn.resolution}}</td>
-      <td>{{spn.offset}}</td>
-      <td>{{spn.units}}</td>
-      <td>{{canFrameResult.spnValues[spn.number].rawData.join(' ') }}</td>
-      <td>{{canFrameResult.spnValues[spn.number].rawValue }}</td>
-      <td>{{canFrameResult.spnValues[spn.number].actualValue }}</td>
-    </tr>
-  </tbody>
-</table>
+<div *ngIf="canFrameResult">
+
+  <h1 class="display-4">
+    {{canFrameResult.definition.name}} ({{canFrameResult.definition.acronym}})</h1>
+
+  <p class="lead">PGN: {{canFrame.pgn}} - {{canFrame.pgnDec}}</p>
+  <p class="lead">DATA: {{canFrame.data.join(' ')}}</p>
+
+  <table class="table table-sm small" *ngIf="canFrameResult">
+    <thead class="thead-dark">
+      <tr>
+        <th>SPN</th>
+        <th>Name</th>
+        <th>Byte Start</th>
+        <th>Bit Length</th>
+        <th>Resolution</th>
+        <th>Offset</th>
+        <th>Units</th>
+        <th>Raw Data</th>
+        <th>Raw Value</th>
+        <th>Actual Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let spn of canFrameResult.definition.spns">
+        <td class="table-active">{{spn.number}}</td>
+        <td class="table-active">{{spn.name}}</td>
+        <td class="table-light">{{spn.bytePosition}}</td>
+        <td class="table-light">{{spn.bitLength}}</td>
+        <td class="table-light">{{spn.resolution}}</td>
+        <td class="table-light">{{spn.offset}}</td>
+        <td class="table-light">{{spn.units}}</td>
+        <td class="table-primary">{{canFrameResult.spnValues[spn.number].rawData.join(' ') }}</td>
+        <td class="table-primary">{{canFrameResult.spnValues[spn.number].rawValue }}</td>
+        <td class="table-success">{{canFrameResult.spnValues[spn.number].actualValue }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
