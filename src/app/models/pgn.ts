@@ -17,7 +17,7 @@ export class Spn {
               public description: string,
               public bytePosition: string,
               public bitLength: number,
-              public resolution: string,
+              public resolution: number,
               public offset: number,
               public units: string) {
   }

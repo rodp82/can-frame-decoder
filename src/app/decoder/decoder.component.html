@@ -22,8 +22,9 @@
       <th>Resolution</th>
       <th>Offset</th>
       <th>Units</th>
-      <th></th>
-      <th></th>
+      <th>Raw Data</th>
+      <th>Raw Value</th>
+      <th>Actual Value</th>
     </tr>
   </thead>
   <tbody>
@@ -34,8 +35,9 @@
       <td>{{spn.resolution}}</td>
       <td>{{spn.offset}}</td>
       <td>{{spn.units}}</td>
-      <td></td>
-      <td></td>
+      <td>{{canFrameResult.spnValues[spn.number].rawData.join(' ') }}</td>
+      <td>{{canFrameResult.spnValues[spn.number].rawValue }}</td>
+      <td>{{canFrameResult.spnValues[spn.number].actualValue }}</td>
     </tr>
   </tbody>
 </table>

@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
-import { CanFrame } from '../models/can-frame';
-import { CanFrameResult } from '../models/can-frame-result';
+import {CanFrame} from '../models/can-frame';
+import {CanFrameResult} from '../models/can-frame-result';
+import {Spn} from '../models/pgn';
 
 @Injectable()
 export class DecoderService {
@@ -20,19 +21,52 @@ export class DecoderService {
       throw new Error('PGN is not found in the definitions');
     }
 
-    let pgnDefintion = this.definitions[ canFrame.pgnDec ];
+    let pgnDefinition = this.definitions[canFrame.pgnDec];
 
-    return new CanFrameResult(pgnDefintion, canFrame, []);
+    let spnValues = this.getSpnValues(pgnDefinition.spns, canFrame.data);
+
+    return new CanFrameResult(pgnDefinition, canFrame, spnValues);
   }
 
-  // private _checkHex(v: string): boolean {
-  //   return /^[0-9A-Fa-f]{1,64}$/.test(v);
-  // }
-  //
-  // private _hex2Dec(v: string): string {
-  //   if (!this._checkHex(v)) return '0';
-  //   return parseInt(v, 16).toString(10);
-  // }
+  getSpnValues(spns: Array<Spn>, messageByteArray: Array<string>): {} {
+    let result = {};
+
+    for (let i = 0; i < spns.length; i++) {
+      let rawData = this._getSpnRawData(spns[i], messageByteArray);
+      let rawValue = this._calculateRawSpnValue(rawData);
+      let spn = spns[i];
+      result[spn.number] = {
+        rawData: rawData,
+        rawValue: rawValue,
+        actualValue: this._calculateActualSpnValue(rawValue, spn)
+      };
+    }
+
+    return result;
+  }
+
+  private _getSpnRawData(spn: Spn, messageByteArray: Array<string>) {
+    let byteStart = parseInt(spn.bytePosition, 10);
+    return messageByteArray.slice(byteStart - 1, (byteStart - 1) + (spn.bitLength / 8));
+  }
+
+  private _calculateRawSpnValue(rawDataArray: Array<string>) {
+    let result = 0;
+    for (let i = 0; i < rawDataArray.length; i++) {
+      result += parseInt(rawDataArray[i], 16) * Math.pow(2, (8 * i));
+    }
+    return result;
+  }
+
+  private _calculateActualSpnValue(rawValue, spn: Spn) {
+    if (rawValue === 255) {
+      return 'No Data';
+    }
+    if (rawValue === 254) {
+      return 'Error';
+    }
+    return ((rawValue * spn.resolution) + spn.offset) + ' ' + spn.units;
+  }
 
   get definitions(): {} {
     return this._definitions;

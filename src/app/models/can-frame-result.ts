@@ -4,10 +4,10 @@ import { CanFrame } from './can-frame';
 export class CanFrameResult {
   private _definition: Pgn;
   private _canFrame: CanFrame;
-  private _spnValues: any[];
+  private _spnValues: {};
 
 
-  constructor(definition: Pgn, canFrame: CanFrame, spnValues: any[]) {
+  constructor(definition: Pgn, canFrame: CanFrame, spnValues: {}) {
     this._definition = definition;
     this._canFrame   = canFrame;
     this._spnValues  = spnValues;
@@ -29,11 +29,11 @@ export class CanFrameResult {
     this._canFrame = value;
   }
 
-  get spnValues(): any[] {
+  get spnValues(): {} {
     return this._spnValues;
   }
 
-  set spnValues(value: any[]) {
+  set spnValues(value: {}) {
     this._spnValues = value;
   }
 }
