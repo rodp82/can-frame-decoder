@@ -1,3 +1,5 @@
+import {NumberConverter} from '../services/number-converter.service';
+
 export class CanFrame {
   private _value: string = '';
   private _messageId: string = '';
@@ -18,20 +20,11 @@ export class CanFrame {
     this.messageBody = split[ 1 ];
 
     this.pgn = this.messageId.slice(2, 6);
-    this.pgnDec = this._hex2Dec(this.pgn);
+    this.pgnDec = parseInt(NumberConverter.Hex2Dec(this.pgn));
 
     for (let i = 0; i < this.messageBody.length; i += 2) {
       this.data.push(this.messageBody.substr(i, 2));
     }
-  }
-
-  private _checkHex(v: string): boolean {
-    return /^[0-9A-Fa-f]{1,64}$/.test(v);
-  }
-
-  private _hex2Dec(v: string): number {
-    if (!this._checkHex(v)) return 0;
-    return parseInt(v, 16);
   }
 
   private _resetModel() {
