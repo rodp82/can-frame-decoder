@@ -16,7 +16,7 @@ export class DecoderService {
     if (!this._definitions || _.isEmpty(this.definitions)) {
       throw new Error('Definitions property is empty');
     }
-    console.log('Decoding can frame', canFrame);
+    // console.log('Decoding can frame', canFrame);
 
     if (!(canFrame.pgnDec in this.definitions)) {
       throw new Error('PGN is not found in the definitions');

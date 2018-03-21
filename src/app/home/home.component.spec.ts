@@ -22,4 +22,9 @@ describe('HomeComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should display original title', () => {
+    let h1 = fixture.nativeElement.querySelector('h1');
+    expect(h1.textContent).toContain(component.pageTitle);
+  });
 });
