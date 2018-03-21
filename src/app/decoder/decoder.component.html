@@ -1,14 +1,23 @@
-<nav class="navbar navbar-dark bg-primary">
-  <form class="form-inline" style="width: 100%" #form="ngForm">
-    <label for="canFrame" class="col-form-label col-form-label-lg mx-5 text-white">CAN Frame</label>
-    <input type="text" name="canFrame" id="canFrame"
+<nav class="navbar navbar-dark bg-primary mb-3">
+  <form class="form-inline" style="width: 100%" #canFrameForm="ngForm">
+    <label class="col-form-label col-form-label-lg mx-5 text-white">CAN Frame</label>
+    <input type="text" name="canFrameValue"
            class="form-control form-control-lg" style="flex-grow: 1"
-           placeholder="18FEEE00#795ADE2CFFFFFEFF"
            [ngModel]="canFrame.value"
            (ngModelChange)="onChange($event)"
+           placeholder="18FEEE00#795ADE2CFFFFFEFF"
+           pattern="^[0-9A-Fa-f]{8}#[0-9A-Fa-f]{16}$"
            required>
   </form>
 </nav>
+
+<div class="alert alert-danger" role="alert" *ngIf="canFrameForm.dirty && canFrameForm.invalid">
+  Enter CAN frame in correct format, e.g. 18FEEE00#795ADE2CFFFFFEFF
+</div>
+
+<div class="alert alert-danger" role="alert" *ngIf="decoderError">
+  {{decoderError}}
+</div>
 
 <div *ngIf="canFrameResult">
 

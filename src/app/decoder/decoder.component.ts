@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -16,9 +17,12 @@ import { Pgn, Spn, SpnTypes } from '../models/pgn';
 })
 export class DecoderComponent implements OnInit {
 
-  canFrame: CanFrame;
+  @ViewChild('canFrameForm') public canFrameForm: NgForm;
+
+  canFrame: CanFrame = new CanFrame('');
   canFrameResult: CanFrameResult;
   canFrameChange: Subject<string> = new Subject<string>();
+  decoderError: string;
 
   pgns = {
     // 61442 : new Pgn (61442, 'Electronic Transmission Controller 1', 8, '10 ms', 'ETC1', [
@@ -79,18 +83,24 @@ export class DecoderComponent implements OnInit {
   }
 
   onChange(text: string) {
+    this.decoderError = '';
     this.canFrameChange.next(text);
   }
 
   onChangeComplete(canFrame: string) {
-    this.canFrame.value = canFrame;
-    this.decode();
+    console.log(this.canFrameForm);
+    this.canFrameResult = undefined;
+    if (this.canFrameForm.valid) {
+      this.canFrame.value = canFrame;
+      this.decode();
+    }
   }
 
   decode() {
     try {
       this.canFrameResult = this.decoder.decode(this.canFrame);
     } catch (e) {
+      this.decoderError = e.message;
       console.log(e);
     }
   }

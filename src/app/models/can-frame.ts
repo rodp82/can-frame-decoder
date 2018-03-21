@@ -15,7 +15,15 @@ export class CanFrame {
   private _extractStr() {
     this._resetModel();
 
+    if (this.value === ''){
+      return;
+    }
+
     let split        = this._value.split('#');
+    if (split.length !== 2) {
+      throw new Error(`Incorrect format for CAN Frame value: "${this.value}"`);
+    }
+
     this.messageId   = split[ 0 ];
     this.messageBody = split[ 1 ];
 
@@ -40,9 +48,6 @@ export class CanFrame {
   }
 
   set value(value: string) {
-    if (value.split('#').length !== 2) {
-      throw new Error(`Incorrect format for CAN Frame value: "${value}"`);
-    }
     this._value = value;
     this._extractStr();
   }
