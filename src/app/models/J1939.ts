@@ -1,4 +1,5 @@
-import { Pgn, Spn, SpnTypes } from './pgn';
+import { Pgn } from './pgn';
+import { Spn, SpnTypes } from './spn';
 
 export const PGNS = {
   61442 : new Pgn(61442, 'Electronic Transmission Controller 1', 8, '10 ms', 'ETC1', [

@@ -7,7 +7,8 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { DecoderService } from '../services/decoder.service';
 import { CanFrame } from '../models/can-frame';
 import { CanFrameResult } from '../models/can-frame-result';
-import { Pgn, Spn, SpnTypes } from '../models/pgn';
+// import { Pgn } from '../models/pgn';
+// import { Spn, SpnTypes } from '../models/spn';
 import { PGNS } from '../models/J1939';
 
 

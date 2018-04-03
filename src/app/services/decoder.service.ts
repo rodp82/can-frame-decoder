@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
-import {CanFrame} from '../models/can-frame';
-import {CanFrameResult} from '../models/can-frame-result';
-import {Spn, SpnTypes} from '../models/pgn';
 import {NumberConverter} from './number-converter.service';
+import { CanFrame } from '../models/can-frame';
+import { CanFrameResult } from '../models/can-frame-result';
+import { Spn, SpnTypes } from '../models/spn';
 
 @Injectable()
 export class DecoderService {
