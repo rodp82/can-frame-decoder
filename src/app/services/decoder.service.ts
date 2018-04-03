@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
-import {NumberConverter} from './number-converter.service';
 import { CanFrame } from '../models/can-frame';
 import { CanFrameResult } from '../models/can-frame-result';
 import { Spn, SpnTypes } from '../models/spn';
+import { NumberConverter } from './number-converter.service';
 
 @Injectable()
 export class DecoderService {
@@ -22,7 +22,7 @@ export class DecoderService {
       throw new Error('PGN is not found in the definitions');
     }
 
-    let pgnDefinition = this.definitions[canFrame.pgnDec];
+    let pgnDefinition = this.definitions[ canFrame.pgnDec ];
 
     let spnValues = this.getSpnValues(pgnDefinition.spns, canFrame.data);
 
@@ -33,13 +33,13 @@ export class DecoderService {
     let result = {};
 
     for (let i = 0; i < spns.length; i++) {
-      let spn = spns[i];
-      let rawData = this._getSpnRawData(spn, messageByteArray);
-      let rawValue = this._calculateRawSpnValue(rawData, spn);
-      result[spn.number] = {
-        rawData: rawData,
-        rawValue: rawValue,
-        actualValue: this._calculateActualSpnValue(rawValue, spn)
+      let spn              = spns[ i ];
+      let rawData          = this._getSpnRawData(spn, messageByteArray);
+      let rawValue         = this._calculateRawSpnValue(rawData, spn);
+      result[ spn.number ] = {
+        rawData     : rawData,
+        rawValue    : rawValue,
+        actualValue : this._calculateActualSpnValue(rawValue, spn)
       };
     }
 
@@ -48,7 +48,7 @@ export class DecoderService {
 
   private _getSpnRawData(spn: Spn, messageByteArray: Array<string>): Array<string> {
 
-    let result = [];
+    let result    = [];
     let byteStart = 0;
     switch (spn.bitLength) {
       case 1:
@@ -59,15 +59,16 @@ export class DecoderService {
 
       case 4:
         let posSplit = spn.bytePosition.split('.');
-        byteStart = parseInt(posSplit[0], 10);
-        let bitPos = parseInt(posSplit[1], 10);
+        byteStart    = parseInt(posSplit[ 0 ], 10);
+        let bitPos   = parseInt(posSplit[ 1 ], 10);
 
-        let byte = messageByteArray[byteStart - 1];
-        let data = (bitPos === 5) ? byte[1] : byte[0];
+        let byte = messageByteArray[ byteStart - 1 ];
+        let data = (bitPos === 5) ? byte[ 1 ] : byte[ 0 ];
         if (spn.type === SpnTypes.Status) {
           result = NumberConverter.Hex2Bin(data).split('');
-        } else {
-          result = [data];
+        }
+        else {
+          result = [ data ];
         }
 
         break;
@@ -75,7 +76,7 @@ export class DecoderService {
       case 8:
       case 16:
         byteStart = parseInt(spn.bytePosition, 10);
-        result = messageByteArray.slice(byteStart - 1, (byteStart - 1) + (spn.bitLength / 8));
+        result    = messageByteArray.slice(byteStart - 1, (byteStart - 1) + (spn.bitLength / 8));
         break;
 
       default:
@@ -90,10 +91,11 @@ export class DecoderService {
 
     if (spn.type === SpnTypes.Status) {
       result = rawDataArray.join('');
-    } else {
+    }
+    else {
       result = 0;
       for (let i = 0; i < rawDataArray.length; i++) {
-        result += parseInt(rawDataArray[i], 16) * Math.pow(2, (8 * i));
+        result += parseInt(rawDataArray[ i ], 16) * Math.pow(2, (8 * i));
       }
     }
     return result;
@@ -101,7 +103,7 @@ export class DecoderService {
 
   private _calculateActualSpnValue(rawValue, spn: Spn) {
     if (spn.type === SpnTypes.Status) {
-      return spn.statuses[rawValue];
+      return spn.statuses[ rawValue ];
     }
     if (rawValue === 255) {
       return 'No Data';

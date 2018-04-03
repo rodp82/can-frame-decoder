@@ -1,12 +1,12 @@
-import {NumberConverter} from '../services/number-converter.service';
+import { NumberConverter } from '../services/number-converter.service';
 
 export class CanFrame {
-  private _value: string = '';
-  private _messageId: string = '';
+  private _value: string       = '';
+  private _messageId: string   = '';
   private _messageBody: string = '';
-  private _pgn: string = '';
-  private _pgnDec: number = 0;
-  private _data: string[] = [];
+  private _pgn: string         = '';
+  private _pgnDec: number      = 0;
+  private _data: string[]      = [];
 
   constructor(canFrameStr: string) {
     this.value = canFrameStr;
@@ -15,11 +15,11 @@ export class CanFrame {
   private _extractStr() {
     this._resetModel();
 
-    if (this.value === ''){
+    if (this.value === '') {
       return;
     }
 
-    let split        = this._value.split('#');
+    let split = this._value.split('#');
     if (split.length !== 2) {
       throw new Error(`Incorrect format for CAN Frame value: "${this.value}"`);
     }
@@ -27,7 +27,7 @@ export class CanFrame {
     this.messageId   = split[ 0 ];
     this.messageBody = split[ 1 ];
 
-    this.pgn = this.messageId.slice(2, 6);
+    this.pgn    = this.messageId.slice(2, 6);
     this.pgnDec = parseInt(NumberConverter.Hex2Dec(this.pgn));
 
     for (let i = 0; i < this.messageBody.length; i += 2) {
@@ -36,11 +36,11 @@ export class CanFrame {
   }
 
   private _resetModel() {
-    this.messageId = '';
+    this.messageId   = '';
     this.messageBody = '';
-    this.pgn = '';
-    this.pgnDec = 0;
-    this.data = [];
+    this.pgn         = '';
+    this.pgnDec      = 0;
+    this.data        = [];
   }
 
   get value(): string {

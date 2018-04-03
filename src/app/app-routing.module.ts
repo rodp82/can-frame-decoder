@@ -4,12 +4,13 @@ import { DecoderComponent } from './decoder/decoder.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'decoder', component: DecoderComponent }
+  { path : '', component : HomeComponent },
+  { path : 'decoder', component : DecoderComponent }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports : [ RouterModule.forRoot(routes) ],
+  exports : [ RouterModule ]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

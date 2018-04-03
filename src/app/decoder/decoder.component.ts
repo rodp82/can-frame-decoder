@@ -13,15 +13,15 @@ import { PGNS } from '../models/J1939';
 
 
 @Component({
-  selector : 'app-decoder',
+  selector    : 'app-decoder',
   templateUrl : './decoder.component.html',
-  styleUrls : [ './decoder.component.scss' ]
+  styleUrls   : [ './decoder.component.scss' ]
 })
 export class DecoderComponent implements OnInit {
 
   @ViewChild('canFrameForm') public canFrameForm: NgForm;
 
-  canFrame: CanFrame = new CanFrame('');
+  canFrame: CanFrame              = new CanFrame('');
   canFrameResult: CanFrameResult;
   canFrameChange: Subject<string> = new Subject<string>();
   decoderError: string;
@@ -57,7 +57,8 @@ export class DecoderComponent implements OnInit {
   decode() {
     try {
       this.canFrameResult = this.decoder.decode(this.canFrame);
-    } catch (e) {
+    }
+    catch (e) {
       this.decoderError = e.message;
       console.log(e);
     }

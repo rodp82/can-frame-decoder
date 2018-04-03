@@ -14,18 +14,19 @@ import { DecoderService } from './services/decoder.service';
 
 
 @NgModule({
-  declarations: [
+  declarations : [
     AppComponent,
     DecoderComponent,
     HomeComponent
   ],
-  imports: [
+  imports      : [
     BrowserModule,
     FormsModule,
     NgbModule.forRoot(),
     AppRoutingModule
   ],
-  providers: [ DecoderService ],
-  bootstrap: [AppComponent]
+  providers    : [ DecoderService ],
+  bootstrap    : [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {
+}
